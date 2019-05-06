@@ -1,26 +1,23 @@
 <template>
   <v-card>
-      <v-flex xs12 sm10>
-        <v-tree url="/item/category/list"
-                :treeData="treeData"
-                :isEdit="isEdit"
-                @handleAdd="handleAdd"
-                @handleEdit="handleEdit"
-                @handleDelete="handleDelete"
-                @handleClick="handleClick"
-        />
-      </v-flex>
+    <v-flex xs12 sm10 lg11>
+      <v-tree url="/item-service/category/list"
+              :isEdit="isEdit"
+              @handleAdd="handleAdd"
+              @handleEdit="handleEdit"
+              @handleDelete="handleDelete"
+              @handleClick="handleClick"
+      />
+    </v-flex>
   </v-card>
 </template>
 
 <script>
-  import {treeData} from '../../mockDB'
   export default {
     name: "category",
     data() {
       return {
-        treeData: treeData,
-        isEdit:true
+        isEdit: true
       }
     },
     methods: {

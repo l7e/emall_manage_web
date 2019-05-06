@@ -70,7 +70,6 @@
 
 <script>
   import BrandForm from './BrandForm'
-  import {brandData} from '../../mockDB'
 
   export default {
     name: "brand",
@@ -153,8 +152,8 @@
         this.loading = true;
         // 200ms后返回假数据
         window.setTimeout(() => {
-          this.items = brandData.slice(0,4);
-          this.totalItems = 100
+          this.items = brandData.slice(0, 4);
+          this.totalItems = 100;
           this.loading = false;
         }, 200)
       }

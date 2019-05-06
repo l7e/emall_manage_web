@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 
-Vue.use(Router)
+Vue.use(Router);
 
 function route (path, file, name, children) {
   return {
@@ -24,7 +24,8 @@ export default new Router({
       children:[
         route("/index/dashboard","/Dashboard","Dashboard"),
         route("/item/category",'/item/Category',"Category"),
-        route("/item/brand",'/item/Brand',"Brand"),
+        // route("/item/brand",'/item/Brand',"Brand"),
+        route("/item/brand",'/item/MyBrand',"Brand"),
         route("/item/list",'/item/Goods',"Goods"),
         route("/item/specification",'/item/Specification',"Specification"),
         route("/user/statistics",'/item/Statistics',"Statistics"),

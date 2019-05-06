@@ -1,4 +1,4 @@
-const baseUrl = 'http://api.emall.com'
+const baseUrl = 'http://api.emall.com';
 const config = {
   locale: 'zh-CN', // en-US, zh-CN
   url: baseUrl,
@@ -67,6 +67,6 @@ const config = {
     { value: 'A'},
     { divider: true },
   ]
-}
+};
 
 export default config
