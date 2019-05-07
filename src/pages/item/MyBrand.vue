@@ -61,20 +61,16 @@
       }
     },
     created() {
-      this.brands = [
-        {id: 1, name: '小米', image: 11, letter: '1'},
-        {id: 1, name: '小米', image: 11, letter: '1'},
-        {id: 1, name: '小米', image: 11, letter: '2'},
-        {id: 1, name: '小米', image: 11, letter: '2'},
-      ];
 
       this.totalBrands = 15;
 
       this.loadBrands();
     },
     methods: {
+
       loadBrands() {
-        this.$http.get('/brand/page', {
+        this.loading = true;
+        this.$http.get('/item-service/brand/list', {
           params: {
             keyword: this.search,
             page: this.pagination.page,  //当前页
@@ -82,12 +78,18 @@
             sortBy: this.pagination.sortBy,  //排序字段
             descending: this.pagination.descending, //是否降序
           }
+        }).then(resp => {
+          this.brands = resp.data.items;
+          this.totalBrands = resp.data.total;
+          this.loading = false;
         })
-      }
+      },
+
+
     },
     watch: {
       search() {
-        this.loadBrands();
+        this.pagination.page = 1;
       },
       pagination: {
         deep: true,
