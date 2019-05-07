@@ -8,15 +8,15 @@
         label="搜索"
         single-line
         hide-details
-        v-model="search"
+        v-model="keyword"
       />
     </v-card-title>
     <v-divider/>
     <v-data-table
       :headers="headers"
-      :items="items"
+      :items="brands"
       :pagination.sync="pagination"
-      :total-items="totalItems"
+      :total-items="totalBrands"
       :loading="loading"
       class="elevation-1"
     >
@@ -65,7 +65,6 @@
       </v-card>
     </v-dialog>
   </v-card>
-
 </template>
 
 <script>
@@ -78,9 +77,9 @@
     },
     data() {
       return {
-        search: '',// 过滤字段
-        totalItems: 0,// 总条数
-        items: [],// 表格数据
+        keyword: '',// 过滤字段
+        totalBrands: 0,// 总条数
+        brands: [],// 表格数据
         loading: true,
         pagination: {},// 分页信息
         headers: [// 表头
@@ -102,10 +101,11 @@
         },
         deep: true
       },
-      search: {
-        handler() {
-          this.getDataFromApi();
-        }
+      keyword() {
+        // handler() {
+        this.pagination.page = 1;
+        this.getDataFromApi();
+        // }
       },
       show(val, oldVal) {
         // 表单关闭后重新加载数据
@@ -128,7 +128,7 @@
         this.isEdit = true;
         this.show = true;
         // 查询商品分类信息，进行回显
-        this.$http.get("/item/category/bid/" + item.id)
+        this.$http.get("/item-service/category/bid/" + item.id)
           .then(resp => {
             this.brand.categories = resp.data;
           })
@@ -150,12 +150,19 @@
       },
       getDataFromApi() {
         this.loading = true;
-        // 200ms后返回假数据
-        window.setTimeout(() => {
-          this.items = brandData.slice(0, 4);
-          this.totalItems = 100;
+        this.$http.get('/item-service/brand/list', {
+          params: {
+            keyword: this.keyword,
+            page: this.pagination.page,  //当前页
+            rows: this.pagination.rowsPerPage, //每页大小
+            sortBy: this.pagination.sortBy,  //排序字段
+            descending: this.pagination.descending, //是否降序
+          }
+        }).then(resp => {
+          this.brands = resp.data.items;
+          this.totalBrands = resp.data.total;
           this.loading = false;
-        }, 200)
+        })
       }
     }
   }

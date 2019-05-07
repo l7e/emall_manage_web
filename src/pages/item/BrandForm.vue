@@ -14,7 +14,7 @@
       required
       mask="A"
     />
-    <v-cascader url="/item/category/list" required
+    <v-cascader url="/item-service/category/list" required
                 v-model="brand.categories"
                 multiple label="商品分类"/>
     <v-layout row>
@@ -36,6 +36,7 @@
 
 <script>
   import config from '@/config';
+
   export default {
     name: "brand-form",
     props: {
@@ -52,21 +53,21 @@
     data() {
       return {
         baseUrl: config.api,
-        valid:false,
+        valid: false,
         brand: {
           name: "",
           image: "",
           letter: "",
           categories: []
         },
-        imageDialogVisible:false
+        imageDialogVisible: false
       }
     },
     watch: {
-      oldBrand:{
-        deep:true,
-        handler(val){
-          Object.deepCopy(val,this.brand);
+      oldBrand: {
+        deep: true,
+        handler(val) {
+          Object.deepCopy(val, this.brand);
         }
       }
     },
@@ -74,13 +75,14 @@
       submit() {
         // 表单校验
         if (this.$refs.brandForm.validate()) {
-          this.brand.categories = this.brand.categories.map(c => c.id);
-          this.brand.letter = this.brand.letter.toUpperCase();
+          const {categories, letter, ...params} = this.brand;
+          params.cids = categories.map(c => c.id).join(',');
+          params.letter = this.brand.letter.toUpperCase();
           // 将数据提交到后台
           this.$http({
             method: this.isEdit ? 'put' : 'post',
-            url: '/item/brand',
-            data: this.$qs.stringify(this.brand)
+            url: '/item-service/brand',
+            data: this.$qs.stringify(params)
           }).then(() => {
             // 关闭窗口
             this.$message.success("保存成功！");
@@ -99,10 +101,10 @@
       handleImageSuccess(res) {
         this.brand.image = res;
       },
-      removeImage(){
+      removeImage() {
         this.brand.image = "";
       },
-      closeWindow(){
+      closeWindow() {
         this.$emit("close");
       }
     }
